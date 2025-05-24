@@ -2,12 +2,22 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"thaibev_backend/internal/common"
 	"thaibev_backend/internal/domain"
 	"thaibev_backend/internal/repositories"
 )
 
 func (svc *service) CreateUserProfile(ctx context.Context, req *domain.CreateUserProfileRequest) (resp *domain.CreateUserProfileResponse, err error) {
+	existing, err := svc.repo.TbTUserProfile.Search(ctx, repositories.TbTUserProfile{
+		Email: req.Email,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(existing) > 0 {
+		return nil, fmt.Errorf("email already exists")
+	}
 
 	generatedUserID, err := svc.repo.TbTUserProfile.GenerateUserID(ctx)
 	if err != nil {
