@@ -79,6 +79,7 @@ func (svc *service) GetUserProfile(ctx context.Context, req *domain.UserProfileR
 		Profile:    User.Profile,
 		Occupation: User.Occupation,
 		BirthDay:   User.BirthDay.String(),
+		Sex:        User.Sex,
 	}
 
 	return resp, nil

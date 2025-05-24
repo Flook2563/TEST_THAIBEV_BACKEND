@@ -20,7 +20,7 @@ type CreateUserProfileResponse struct {
 }
 
 type UserProfileRequest struct {
-	UserID string `json:"user_id"`
+	UserID string `json:"	"`
 }
 
 type UserProfileResponse struct {
@@ -32,6 +32,7 @@ type UserProfileResponse struct {
 	Profile    string `json:"profile"`
 	Occupation string `json:"occupation"`
 	BirthDay   string `json:"birth_day"`
+	Sex        string `json:"sex"`
 }
 
 func (r *CreateUserProfileRequest) String() string {
