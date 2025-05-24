@@ -1,11 +1,14 @@
 package services
 
 import (
+	"context"
 	"thaibev_backend/appconfig"
+	"thaibev_backend/internal/domain"
 	"thaibev_backend/internal/repositories"
 )
 
 type Service interface {
+	GetUserProfile(ctx context.Context, req *domain.UserProfileRequest) (*domain.UserProfileResponse, error)
 }
 
 type service struct {
