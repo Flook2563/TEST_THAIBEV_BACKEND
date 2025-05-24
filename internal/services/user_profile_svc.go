@@ -29,6 +29,11 @@ func (svc *service) CreateUserProfile(ctx context.Context, req *domain.CreateUse
 		return nil, err
 	}
 
+	birthDay, err := common.ParseBirthDay(req.BirthDay)
+	if err != nil {
+		return nil, err
+	}
+
 	create, err := svc.repo.TbTUserProfile.Create(ctx, repositories.TbTUserProfile{
 		Id:         generatedUserID,
 		FirstName:  req.FirstName,
@@ -37,7 +42,8 @@ func (svc *service) CreateUserProfile(ctx context.Context, req *domain.CreateUse
 		Phone:      encryptedPhone,
 		Profile:    req.Profile,
 		Occupation: req.Occupation,
-		BirthDay:   req.BirthDay,
+		Sex:        req.Sex,
+		BirthDay:   birthDay,
 	})
 	if err != nil {
 		return nil, err

@@ -4,10 +4,12 @@ import (
 	"net/http"
 	"thaibev_backend/appconfig"
 	"thaibev_backend/database"
+	"thaibev_backend/internal/common"
 	"thaibev_backend/internal/handler"
 	"thaibev_backend/internal/repositories"
 	"thaibev_backend/internal/services"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
@@ -21,6 +23,8 @@ func routes(e *echo.Echo, cfg *appconfig.AppConfig) {
 	Services := services.NewService(cfg, repo)
 	handler := handler.NewHandler(Services, cfg)
 
+	e.Validator = &common.CustomValidator{Validator: validator.New()}
+
 	e.GET("/health", func(c echo.Context) error {
 		response := map[string]string{
 			"message": "service available",
@@ -31,7 +35,7 @@ func routes(e *echo.Echo, cfg *appconfig.AppConfig) {
 	v1 := e.Group("/api/v1")
 
 	users := v1.Group("/users")
-	users.POST("/profile", handler.CreateUserProfile)
+	users.POST("/create", handler.CreateUserProfile)
 	users.POST("/profile", handler.GetUserProfile)
 	users.GET("/check-email/:email", handler.CheckEmailExists)
 

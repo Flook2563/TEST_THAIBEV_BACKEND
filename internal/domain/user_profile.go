@@ -2,17 +2,17 @@ package domain
 
 import (
 	"encoding/json"
-	"time"
 )
 
 type CreateUserProfileRequest struct {
-	FirstName  string    `json:"first_name"`
-	LastName   string    `json:"last_name"`
-	Email      string    `json:"email"`
-	Phone      string    `json:"phone"`
-	Profile    string    `json:"profile"`
-	Occupation string    `json:"occupation"`
-	BirthDay   time.Time `json:"birth_day"`
+	FirstName  string `json:"first_name"`
+	LastName   string `json:"last_name"`
+	Email      string `json:"email"`
+	Phone      string `json:"phone"`
+	Profile    string `json:"profile"`
+	Occupation string `json:"occupation"`
+	BirthDay   string `json:"birth_day"`
+	Sex        string `json:"sex"`
 }
 
 type CreateUserProfileResponse struct {

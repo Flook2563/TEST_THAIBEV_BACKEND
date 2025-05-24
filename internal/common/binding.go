@@ -7,7 +7,9 @@ import (
 	"encoding/base64"
 	"errors"
 	"io"
+	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
@@ -26,6 +28,14 @@ func BindValidateBody(c echo.Context, request interface{}) error {
 		return err
 	}
 	return nil
+}
+
+type CustomValidator struct {
+	Validator *validator.Validate
+}
+
+func (cv *CustomValidator) Validate(i interface{}) error {
+	return cv.Validator.Struct(i)
 }
 
 func EncryptAES(plainText, key string) (string, error) {
@@ -68,4 +78,13 @@ func DecryptAES(cipherText, key string) (string, error) {
 		return "", err
 	}
 	return string(plainText), nil
+}
+
+func ParseBirthDay(dateStr string) (time.Time, error) {
+	const layout = "2006-01-02"
+	t, err := time.Parse(layout, dateStr)
+	if err != nil {
+		return time.Time{}, errors.New("birth_day must be in YYYY-MM-DD format")
+	}
+	return t, nil
 }
