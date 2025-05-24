@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -11,6 +12,7 @@ type TbTUserRepo interface {
 	Create(ctx context.Context, req TbTUser) (TbTUser, error)
 	Search(ctx context.Context, filter TbTUser) ([]TbTUser, error)
 	UpdateByFilter(ctx context.Context, filter TbTUser, update TbTUser) error
+	GenerateUserID(ctx context.Context) (string, error)
 }
 
 type tbUserRepo struct {
@@ -101,4 +103,18 @@ func (repo *tbUserRepo) UpdateByFilter(
 	}
 
 	return query.Updates(update).Error
+}
+
+func (repo *tbUserRepo) GenerateUserID(ctx context.Context) (string, error) {
+	var count int64
+	err := repo.db.WithContext(ctx).Model(&TbTUser{}).Count(&count).Error
+	if err != nil {
+		return "", err
+	}
+
+	nextID := count + 1
+
+	userID := fmt.Sprintf("UID%06d", nextID)
+
+	return userID, nil
 }
