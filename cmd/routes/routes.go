@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func routes(e *echo.Echo, cfg *appconfig.AppConfig) {
@@ -22,6 +23,11 @@ func routes(e *echo.Echo, cfg *appconfig.AppConfig) {
 	repo := repositories.NewRepository(db)
 	Services := services.NewService(cfg, repo)
 	handler := handler.NewHandler(Services, cfg)
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:5173"},
+		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE, echo.OPTIONS},
+	}))
 
 	e.Validator = &common.CustomValidator{Validator: validator.New()}
 
