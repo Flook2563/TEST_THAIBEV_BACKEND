@@ -7,7 +7,7 @@ import (
 	"thaibev_backend/appconfig"
 	"time"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 func ServerStart(cfg *appconfig.AppConfig) *echo.Echo {

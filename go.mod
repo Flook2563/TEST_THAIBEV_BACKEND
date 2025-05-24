@@ -5,7 +5,6 @@ go 1.23.0
 toolchain go1.23.9
 
 require (
-	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/spf13/viper v1.20.1
 	gorm.io/driver/postgres v1.5.11
