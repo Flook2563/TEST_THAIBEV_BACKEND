@@ -4,6 +4,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 	"thaibev_backend/appconfig"
 	"time"
 
@@ -27,9 +30,12 @@ func ServerStart(cfg *appconfig.AppConfig) *echo.Echo {
 }
 
 func ServerShutdown(e *echo.Echo) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 	if err := e.Shutdown(ctx); err != nil {
-		e.Logger.Fatal("Server forced to shutdown: ", err)
+		e.Logger.Fatal(err)
 	}
 }
