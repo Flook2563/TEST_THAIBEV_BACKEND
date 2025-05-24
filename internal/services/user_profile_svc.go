@@ -77,3 +77,13 @@ func (svc *service) GetUserProfile(ctx context.Context, req *domain.UserProfileR
 
 	return resp, nil
 }
+
+func (svc *service) CheckEmailExists(ctx context.Context, email string) (bool, error) {
+	existing, err := svc.repo.TbTUserProfile.Search(ctx, repositories.TbTUserProfile{
+		Email: email,
+	})
+	if err != nil {
+		return false, err
+	}
+	return len(existing) > 0, nil
+}

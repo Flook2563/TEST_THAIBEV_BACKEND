@@ -47,3 +47,18 @@ func (h *handler) GetUserProfile(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, resp)
 }
+
+func (h *handler) CheckEmailExists(c echo.Context) error {
+	ctx := c.Request().Context()
+	email := c.Param("email")
+	if email == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "email is required"})
+	}
+
+	exists, err := h.services.CheckEmailExists(ctx, email)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "internal error"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]bool{"exists": exists})
+}

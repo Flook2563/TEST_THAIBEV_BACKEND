@@ -33,5 +33,6 @@ func routes(e *echo.Echo, cfg *appconfig.AppConfig) {
 	users := v1.Group("/users")
 	users.POST("/profile", handler.CreateUserProfile)
 	users.POST("/profile", handler.GetUserProfile)
+	users.GET("/check-email/:email", handler.CheckEmailExists)
 
 }
