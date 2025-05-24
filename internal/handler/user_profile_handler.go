@@ -62,3 +62,16 @@ func (h *handler) CheckEmailExists(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]bool{"exists": exists})
 }
+
+func (h *handler) DeleteUserProfile(c echo.Context) error {
+	ctx := c.Request().Context()
+	userID := c.Param("user_id")
+	if userID == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "user_id is required"})
+	}
+	err := h.services.DeleteUserProfile(ctx, userID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, map[string]string{"message": "deleted successfully"})
+}

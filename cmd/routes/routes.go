@@ -38,5 +38,6 @@ func routes(e *echo.Echo, cfg *appconfig.AppConfig) {
 	users.POST("/create", handler.CreateUserProfile)
 	users.POST("/profile", handler.GetUserProfile)
 	users.GET("/check-email/:email", handler.CheckEmailExists)
+	users.DELETE("/:user_id", handler.DeleteUserProfile)
 
 }

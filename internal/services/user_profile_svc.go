@@ -94,3 +94,10 @@ func (svc *service) CheckEmailExists(ctx context.Context, email string) (bool, e
 	}
 	return len(existing) > 0, nil
 }
+
+func (svc *service) DeleteUserProfile(ctx context.Context, userID string) error {
+	if userID == "" {
+		return fmt.Errorf("user_id is required")
+	}
+	return svc.repo.TbTUserProfile.Delete(ctx, repositories.TbTUserProfile{Id: userID})
+}

@@ -12,6 +12,7 @@ type TbTUserProfileRepo interface {
 	Create(ctx context.Context, req TbTUserProfile) (TbTUserProfile, error)
 	Search(ctx context.Context, filter TbTUserProfile) ([]TbTUserProfile, error)
 	UpdateByFilter(ctx context.Context, filter TbTUserProfile, update TbTUserProfile) error
+	Delete(ctx context.Context, filter TbTUserProfile) error
 	GenerateUserID(ctx context.Context) (string, error)
 }
 
@@ -103,6 +104,16 @@ func (repo *tbUserProfileRepo) UpdateByFilter(
 	}
 
 	return query.Updates(update).Error
+}
+
+func (repo *tbUserProfileRepo) Delete(ctx context.Context, filter TbTUserProfile) error {
+	query := repo.db.WithContext(ctx).Model(&TbTUserProfile{})
+
+	if filter.Id != "" {
+		query = query.Where("id = ?", filter.Id)
+	}
+
+	return query.Delete(&TbTUserProfile{}).Error
 }
 
 func (repo *tbUserProfileRepo) GenerateUserID(ctx context.Context) (string, error) {
