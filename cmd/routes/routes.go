@@ -31,6 +31,7 @@ func routes(e *echo.Echo, cfg *appconfig.AppConfig) {
 	v1 := e.Group("/api/v1")
 
 	users := v1.Group("/users")
-	users.GET("/profile", handler.GetUserProfile)
+	users.POST("/profile", handler.CreateUserProfile)
+	users.POST("/profile", handler.GetUserProfile)
 
 }

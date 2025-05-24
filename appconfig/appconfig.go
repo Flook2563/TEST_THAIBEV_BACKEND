@@ -8,6 +8,7 @@ type AppConfig struct {
 	Log struct {
 		Level string
 	}
+	EncryptionKey string
 }
 
 type Database struct {

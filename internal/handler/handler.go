@@ -8,6 +8,7 @@ import (
 )
 
 type Handler interface {
+	CreateUserProfile(c echo.Context) error
 	GetUserProfile(c echo.Context) error
 }
 

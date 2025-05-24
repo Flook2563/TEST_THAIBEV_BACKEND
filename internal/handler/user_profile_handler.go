@@ -8,6 +8,26 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func (h *handler) CreateUserProfile(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	req := domain.CreateUserProfileRequest{}
+	if err := common.GetAndValidateRequestBody(c, &req); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Invalid request body",
+		})
+	}
+
+	resp, err := h.services.CreateUserProfile(ctx, &req)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "Failed to create user profile",
+		})
+	}
+
+	return c.JSON(http.StatusOK, resp)
+}
+
 func (h *handler) GetUserProfile(c echo.Context) error {
 	ctx := c.Request().Context()
 
