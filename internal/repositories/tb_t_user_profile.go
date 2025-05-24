@@ -8,18 +8,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type TbTUserRepo interface {
-	Create(ctx context.Context, req TbTUser) (TbTUser, error)
-	Search(ctx context.Context, filter TbTUser) ([]TbTUser, error)
-	UpdateByFilter(ctx context.Context, filter TbTUser, update TbTUser) error
+type TbTUserProfileRepo interface {
+	Create(ctx context.Context, req TbTUserProfile) (TbTUserProfile, error)
+	Search(ctx context.Context, filter TbTUserProfile) ([]TbTUserProfile, error)
+	UpdateByFilter(ctx context.Context, filter TbTUserProfile, update TbTUserProfile) error
 	GenerateUserID(ctx context.Context) (string, error)
 }
 
-type tbUserRepo struct {
+type tbUserProfileRepo struct {
 	db *gorm.DB
 }
 
-type TbTUser struct {
+type TbTUserProfile struct {
 	Id         string    `gorm:"column:id;type:text;primaryKey" db:"id" json:"id"`
 	FirstName  string    `gorm:"column:first_name;type:text" db:"first_name" json:"first_name"`
 	LastName   string    `gorm:"column:last_name;type:text" db:"last_name" json:"last_name"`
@@ -33,27 +33,27 @@ type TbTUser struct {
 	UpdateDate time.Time `gorm:"column:update_date;autoUpdateTime" json:"update_date"`
 }
 
-func (TbTUser) TableName() string {
-	return "tb_t_user"
+func (TbTUserProfile) TableName() string {
+	return "tb_t_user_profile"
 }
 
-func NewTbTUserRepo(db *gorm.DB) TbTUserRepo {
-	return &tbUserRepo{
+func NewTbTUserRepo(db *gorm.DB) TbTUserProfileRepo {
+	return &tbUserProfileRepo{
 		db: db,
 	}
 }
 
-func (repo *tbUserRepo) Create(ctx context.Context, req TbTUser) (TbTUser, error) {
-	query := repo.db.WithContext(ctx).Model(&TbTUser{})
+func (repo *tbUserProfileRepo) Create(ctx context.Context, req TbTUserProfile) (TbTUserProfile, error) {
+	query := repo.db.WithContext(ctx).Model(&TbTUserProfile{})
 	result := query.Create(&req)
 	if result.Error != nil {
-		return TbTUser{}, result.Error
+		return TbTUserProfile{}, result.Error
 	}
 	return req, nil
 }
 
-func (repo *tbUserRepo) Search(ctx context.Context, filter TbTUser) ([]TbTUser, error) {
-	query := repo.db.WithContext(ctx).Model(&TbTUser{}).Order("id DESC")
+func (repo *tbUserProfileRepo) Search(ctx context.Context, filter TbTUserProfile) ([]TbTUserProfile, error) {
+	query := repo.db.WithContext(ctx).Model(&TbTUserProfile{}).Order("id DESC")
 
 	if filter.Id != "" {
 		query = query.Where("id = ?", filter.Id)
@@ -83,7 +83,7 @@ func (repo *tbUserRepo) Search(ctx context.Context, filter TbTUser) ([]TbTUser, 
 		query = query.Where("sex = ?", filter.Sex)
 	}
 
-	resp := []TbTUser{}
+	resp := []TbTUserProfile{}
 	if err := query.Find(&resp).Error; err != nil {
 		return resp, err
 	}
@@ -91,12 +91,12 @@ func (repo *tbUserRepo) Search(ctx context.Context, filter TbTUser) ([]TbTUser, 
 	return resp, nil
 }
 
-func (repo *tbUserRepo) UpdateByFilter(
+func (repo *tbUserProfileRepo) UpdateByFilter(
 	ctx context.Context,
-	filter TbTUser,
-	update TbTUser,
+	filter TbTUserProfile,
+	update TbTUserProfile,
 ) error {
-	query := repo.db.WithContext(ctx).Model(&TbTUser{})
+	query := repo.db.WithContext(ctx).Model(&TbTUserProfile{})
 
 	if filter.Id != "" {
 		query = query.Where("id = ?", filter.Id)
@@ -105,9 +105,9 @@ func (repo *tbUserRepo) UpdateByFilter(
 	return query.Updates(update).Error
 }
 
-func (repo *tbUserRepo) GenerateUserID(ctx context.Context) (string, error) {
+func (repo *tbUserProfileRepo) GenerateUserID(ctx context.Context) (string, error) {
 	var count int64
-	err := repo.db.WithContext(ctx).Model(&TbTUser{}).Count(&count).Error
+	err := repo.db.WithContext(ctx).Model(&TbTUserProfile{}).Count(&count).Error
 	if err != nil {
 		return "", err
 	}

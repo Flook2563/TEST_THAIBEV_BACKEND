@@ -56,7 +56,7 @@ func OpenPostgresqlDatabase(cfg appconfig.Database) (*gorm.DB, error) {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	if err := db.AutoMigrate(
-		&repositories.TbTUser{},
+		&repositories.TbTUserProfile{},
 	); err != nil {
 		return nil, fmt.Errorf("failed to migrate tables: %v", err)
 	}

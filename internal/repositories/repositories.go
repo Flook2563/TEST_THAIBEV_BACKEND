@@ -3,11 +3,11 @@ package repositories
 import "gorm.io/gorm"
 
 type Repo struct {
-	TbTUser TbTUserRepo
+	TbTUserProfile TbTUserProfileRepo
 }
 
 func NewRepository(db *gorm.DB) *Repo {
 	return &Repo{
-		TbTUser: NewTbTUserRepo(db),
+		TbTUserProfile: NewTbTUserRepo(db),
 	}
 }

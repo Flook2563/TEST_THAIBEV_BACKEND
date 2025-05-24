@@ -3,9 +3,12 @@ package handler
 import (
 	"thaibev_backend/appconfig"
 	"thaibev_backend/internal/services"
+
+	"github.com/labstack/echo/v4"
 )
 
 type Handler interface {
+	GetUserProfile(c echo.Context) error
 }
 
 type handler struct {
