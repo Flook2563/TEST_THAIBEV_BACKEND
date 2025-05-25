@@ -15,6 +15,10 @@ func (svc *service) GetAllUser(ctx context.Context) (*[]domain.AllUserProfileRes
 	}
 	result := make([]domain.AllUserProfileResponse, len(users))
 	for i, u := range users {
+		decryptedPhone, err := common.DecryptAES(u.Phone, svc.cfg.EncryptionKey)
+		if err != nil {
+			return nil, err
+		}
 		result[i] = domain.AllUserProfileResponse{
 			UserID:     u.Id,
 			FirstName:  u.FirstName,
@@ -23,6 +27,9 @@ func (svc *service) GetAllUser(ctx context.Context) (*[]domain.AllUserProfileRes
 			Profile:    u.Profile,
 			Occupation: u.Occupation,
 			Sex:        u.Sex,
+			BirthDay:   u.BirthDay.String(),
+			Createdate: u.CreateDate.String(),
+			Phone:      decryptedPhone,
 		}
 	}
 	return &result, nil
