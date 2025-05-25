@@ -41,9 +41,11 @@ func routes(e *echo.Echo, cfg *appconfig.AppConfig) {
 	v1 := e.Group("/api/v1")
 
 	users := v1.Group("/users")
+	users.GET("", handler.GetAllUser)
 	users.POST("/create", handler.CreateUserProfile)
 	users.POST("/profile", handler.GetUserProfile)
-	users.GET("/check-email/:email", handler.CheckEmailExists)
 	users.DELETE("/:user_id", handler.DeleteUserProfile)
+	users.GET("/check-email/:email", handler.CheckEmailExists)
+
 
 }

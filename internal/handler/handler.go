@@ -12,6 +12,7 @@ type Handler interface {
 	GetUserProfile(c echo.Context) error
 	CheckEmailExists(c echo.Context) error
 	DeleteUserProfile(c echo.Context) error
+	GetAllUser(c echo.Context) error
 }
 
 type handler struct {

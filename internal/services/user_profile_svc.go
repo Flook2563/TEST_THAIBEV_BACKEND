@@ -8,6 +8,26 @@ import (
 	"thaibev_backend/internal/repositories"
 )
 
+func (svc *service) GetAllUser(ctx context.Context) (*[]domain.AllUserProfileResponse, error) {
+	users, err := svc.repo.TbTUserProfile.Search(ctx, repositories.TbTUserProfile{})
+	if err != nil {
+		return nil, err
+	}
+	result := make([]domain.AllUserProfileResponse, len(users))
+	for i, u := range users {
+		result[i] = domain.AllUserProfileResponse{
+			UserID:     u.Id,
+			FirstName:  u.FirstName,
+			LastName:   u.LastName,
+			Email:      u.Email,
+			Profile:    u.Profile,
+			Occupation: u.Occupation,
+			Sex:        u.Sex,
+		}
+	}
+	return &result, nil
+}
+
 func (svc *service) CreateUserProfile(ctx context.Context, req *domain.CreateUserProfileRequest) (resp *domain.CreateUserProfileResponse, err error) {
 	existing, err := svc.repo.TbTUserProfile.Search(ctx, repositories.TbTUserProfile{
 		Email: req.Email,

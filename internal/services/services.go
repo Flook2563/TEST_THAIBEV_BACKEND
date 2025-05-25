@@ -8,6 +8,7 @@ import (
 )
 
 type Service interface {
+	GetAllUser(ctx context.Context) (*[]domain.AllUserProfileResponse, error)
 	CreateUserProfile(ctx context.Context, req *domain.CreateUserProfileRequest) (*domain.CreateUserProfileResponse, error)
 	GetUserProfile(ctx context.Context, req *domain.UserProfileRequest) (*domain.UserProfileResponse, error)
 	CheckEmailExists(ctx context.Context, email string) (bool, error)

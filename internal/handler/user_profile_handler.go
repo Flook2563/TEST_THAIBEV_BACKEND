@@ -8,6 +8,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func (h *handler) GetAllUser(c echo.Context) error {
+	ctx := c.Request().Context()
+	users, err := h.services.GetAllUser(ctx)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to get users"})
+	}
+	return c.JSON(http.StatusOK, users)
+}
+
 func (h *handler) CreateUserProfile(c echo.Context) error {
 	ctx := c.Request().Context()
 
